@@ -64,6 +64,19 @@ The 21st.dev MCP server is configured in Claude settings. Once your API key is s
 ### Templates
 Landing pages · Portfolios · SaaS · Dashboards · Admin panels · AI chat · Ecommerce · Blogs · Docs
 
+## Scraped Inspiration References (in this skill's /references/ folder)
+
+| File | Contents |
+|---|---|
+| `references/heroes.md` | 80 hero sections grouped by style (aurora, glass, 3D/shader, gradient, scroll, text, AI/tech, etc.) with author, URL, and code snippet |
+| `references/backgrounds.md` | 40 background components (aurora, shader, particle, mesh, noise, orb, grid, wave) |
+| `references/pricing.md` | 30 pricing section layouts |
+| `references/testimonials.md` | 25 testimonial/review components |
+| `references/nav.md` | 25 navbar/navigation components |
+| `references/cards.md` | 25 bento, tilt, feature, and glass card components |
+
+When building any of these sections, read the relevant reference file first for inspiration, then pick the closest match and adapt or build from scratch with that aesthetic.
+
 ## Usage Patterns
 
 ### When building a new page section
