@@ -5,6 +5,8 @@ Personal Claude Code configuration: 460+ AI skills, 21st.dev UI inspiration with
 **GitHub:** `github.com/impactors-academy/claude-config` (private)
 **Owner:** Impactors Academy
 
+> **New to the library?** Read the [complete usage guide](AGENT_LIBRARY_GUIDE.md) — prompting examples, invocation patterns, power workflows, and a full categorized skill index.
+
 ---
 
 ## Quick Start — New Machine Setup
