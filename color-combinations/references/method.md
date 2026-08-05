@@ -89,11 +89,47 @@ inventing new ones.
 Then check where each is used: a color used as a background needs its foreground
 verified, and a color used on multiple grounds probably needs splitting into a ramp.
 
-## Re-extracting the dataset
+## Re-extracting and verifying the dataset
 
-`data/sanzo-wada-348.csv` was parsed from the PDF's uncompressed content streams —
-each swatch is a `q … cm / r g b scn / path / f / Q` block, so the fill color and the
-translation are both recoverable exactly. Page backgrounds (width 2280) and the
-footer logo (width 236) are excluded by width; one stray orphan swatch on page 7 is
-dropped by discarding groups of length 1. The result is exactly 348, matching the
-count the book states.
+```bash
+python3 scripts/extract.py "references/A Dictionary of Color Combinations.pdf" data/sanzo-wada-348.csv
+python3 scripts/verify.py  "references/A Dictionary of Color Combinations.pdf"
+```
+
+`extract.py` parses the PDF's uncompressed content streams — each swatch is a
+`q … cm / r g b scn / path / f / Q` block, so the fill color and the translation are
+both recoverable exactly. Nothing is sampled or averaged. Four classes of fill are
+excluded:
+
+| Fill | Test | Why |
+|---|---|---|
+| Page background | width 2280 | the full MediaBox |
+| Footer logo | width 236 | HexPot's mark, on every page |
+| Hairline outline | path closes >1 subpath | a drawn border, not a color |
+| Orphan swatch | group of 1 | a stray element on page 7 |
+
+Result: exactly 348 — 120 two-color, 120 three-color, 108 four-color, 1032 swatches.
+
+### Why the outline rule matters
+
+Page 3 carries a white swatch, which would be invisible on a white page, so the
+designer drew a 1px grey ring behind it. In the content stream that ring is just
+another fill, and a naive parser reads `#979797` as a third color in the plate. It
+gives itself away geometrically: it closes many subpaths, where a real swatch closes
+exactly one.
+
+**The count did not catch this.** The total was 348 either way — the phantom simply
+moved one plate from the two-color set into the three-color set. Only rendering the
+PDF and sampling the actual pixel found it.
+
+### Why verification is a separate step
+
+Parsing tells you what a PDF *contains*; it does not tell you what it *renders*. A
+fill can be clipped, hidden behind another, or painted over. `verify.py` re-renders
+the PDF with Ghostscript at 72dpi — where one PDF unit is one pixel, so a swatch's
+centre maps directly, remembering that PDF y-origin is bottom-left and raster
+y-origin is top-left — and compares the real pixel at every swatch centre against the
+CSV. Current state: 1032/1032 exact, 0 mismatches.
+
+Apply the same discipline to any data you extract from a rendered format. If you have
+not compared against the rendering, you have a plausible parse, not a verified one.
