@@ -293,6 +293,29 @@ def cmd_tokens(args):
 
     by_light = sorted(cols, key=lambda c: to_lch(parse(c))[0])
     ground = by_light[0] if ground_pref == "dark" else by_light[-1]
+
+    # Many of Wada's plates are sets of mid-tone colors with no usable ground —
+    # gorgeous as a category family, unusable as a UI surface. Say so rather than
+    # emitting a token block that fails every check.
+    gL = to_lch(parse(ground))[0]
+    ok = gL <= 25 if ground_pref == "dark" else gL >= 88
+    if not ok:
+        want = "dark enough (L≤25)" if ground_pref == "dark" else "light enough (L≥88)"
+        print(f"/* No usable {ground_pref} ground in this combination. */")
+        print(f"/* Its {'darkest' if ground_pref=='dark' else 'lightest'} colour is "
+              f"{ground} at L {gL:.1f}, which is not {want}. */")
+        print("/*")
+        print(" * This is a CATEGORY palette, not a UI palette: use it for chart series,")
+        print(" * tags or venture colours over your own neutral ground, and take the")
+        print(" * ground and foreground from somewhere else. Check it with:")
+        print(f" *   palette.py browse --on \"#0B0908\"   (combos legible on your ground)")
+        print(" *")
+        print(" * To force it anyway, pass the ground explicitly as the first colour:")
+        print(f" *   palette.py tokens \"#0B0908,{','.join(cols)}\"")
+        print(" */")
+        for c in cols:
+            print(f"/* {c}  L {to_lch(parse(c))[0]:5.1f}   {contrast(c, '#0B0908'):5.2f}:1 on a near-black ground */")
+        return
     rest = [c for c in cols if c != ground]
     # Foreground: whatever reads best on the ground.
     fg = max(rest, key=lambda c: contrast(c, ground))
