@@ -65,7 +65,11 @@ family, ≥ 20 is a different color.
 `tokens` is the one that does real work: it assigns ground / foreground / accent /
 support by lightness and chroma, derives the missing light-surface accent variant by
 walking lightness until it clears 4.5:1, and **warns instead of silently emitting a
-palette that fails**. Never hand-write a token block when this can generate it.
+palette that fails**. If the combination has no colour dark (or light) enough to be a
+ground, it refuses outright and tells you the plate is a *category* palette — good for
+chart series or tags over your own neutral, useless as a UI surface. Pass an explicit
+ground as the first hex to override. Never hand-write a token block when this can
+generate it.
 
 ## Two starting points
 
