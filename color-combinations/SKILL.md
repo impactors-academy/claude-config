@@ -18,8 +18,13 @@ Two failure modes this skill exists to prevent:
 ## The data
 
 `data/sanzo-wada-348.csv` — all 348 combinations, extracted from the vector fills of
-the HexPot PDF edition, not retyped or eyeballed. 119 two-color, 121 three-color,
-108 four-color.
+the HexPot PDF edition, not retyped or eyeballed. 120 two-color, 120 three-color,
+108 four-color; 1032 swatches.
+
+**Verified against the rendering, not just the parse:** `scripts/verify.py` re-renders
+the PDF and compares the real pixel at every swatch centre to the CSV — currently
+1032/1032 exact, 0 mismatches. `scripts/extract.py` rebuilds the CSV from the PDF, so
+the whole dataset is reproducible rather than trusted. See `references/method.md`.
 
 The source PDF sits at `references/A Dictionary of Color Combinations.pdf` on local
 machines but is **not committed** to the public `claude-config` mirror — it is a
