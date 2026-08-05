@@ -3,6 +3,11 @@ name: modern-web-design
 description: Modern web design trends, principles, and implementation patterns for 2024-2025. Use this skill when designing websites, creating interactive experiences, implementing design systems, ensuring accessibility, or building performance-first interfaces. Triggers on tasks involving modern design trends, micro-interactions, scrollytelling, bold minimalism, cursor UX, glassmorphism, accessibility compliance, performance optimization, or design system architecture. References animation skills (GSAP, Framer Motion, React Spring), 3D skills (Three.js, R3F, Babylon.js), and component libraries for implementation guidance.
 ---
 
+> **Any colour decision belongs to `/color-combinations`.** It carries all 348 Sanzo
+> Wada combinations as queryable data, CIEDE2000 + WCAG tooling, and the established
+> brand palettes. Use it before picking or approving a hex — do not hand-pick a
+> palette here, and do not restate colour values that live there.
+
 # Modern Web Design
 
 ## Overview

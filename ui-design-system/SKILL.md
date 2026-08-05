@@ -3,6 +3,11 @@ name: "ui-design-system"
 description: UI design system toolkit for Senior UI Designer including design token generation, component documentation, responsive design calculations, and developer handoff tools. Use when creating design systems, generating design tokens, maintaining visual consistency, or facilitating design-dev collaboration and developer handoff.
 ---
 
+> **Any colour decision belongs to `/color-combinations`.** It carries all 348 Sanzo
+> Wada combinations as queryable data, CIEDE2000 + WCAG tooling, and the established
+> brand palettes. Use it before picking or approving a hex — do not hand-pick a
+> palette here, and do not restate colour values that live there.
+
 # UI Design System
 
 Generate design tokens, create color palettes, calculate typography scales, build component systems, and prepare developer handoff documentation.

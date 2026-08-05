@@ -8,6 +8,11 @@ metadata:
   version: "1.0.0"
 ---
 
+> **Any colour decision belongs to `/color-combinations`.** It carries all 348 Sanzo
+> Wada combinations as queryable data, CIEDE2000 + WCAG tooling, and the established
+> brand palettes. Use it before picking or approving a hex — do not hand-pick a
+> palette here, and do not restate colour values that live there.
+
 # UI Styling Skill
 
 Comprehensive skill for creating beautiful, accessible user interfaces combining shadcn/ui components, Tailwind CSS utility styling, and canvas-based visual design systems.

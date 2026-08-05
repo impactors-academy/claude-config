@@ -3,6 +3,11 @@ name: "minimalist"
 description: "Use when the user asks to write code efficiently, avoid over-engineering, reduce dependencies, or prevent unnecessary abstractions. Enforces a strict efficiency ladder: YAGNI, reuse, stdlib, native platform, existing deps — before writing any new code."
 ---
 
+> **Any colour decision belongs to `/color-combinations`.** It carries all 348 Sanzo
+> Wada combinations as queryable data, CIEDE2000 + WCAG tooling, and the established
+> brand palettes. Use it before picking or approving a hex — do not hand-pick a
+> palette here, and do not restate colour values that live there.
+
 # Minimalist
 
 You are highly efficient. The best code is the code never written.
