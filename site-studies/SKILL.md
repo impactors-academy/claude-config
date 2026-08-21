@@ -30,11 +30,24 @@ building any new page, section, or component.
 | voxelo-ai | AI SaaS (Next.js) | Custom WebGL "Peach" framework, Lenis, glitch-decode text |
 | xnrgy-club | Padel/fitness club (WP) | 187px Helvetica hero, Lenis, split-text entrance, custom cursor |
 
+## Admin/SaaS tool studies (different genre — own recommendation section, not folded into SYNTHESIS.md)
+
+The 13 sites above are all marketing/landing pages — SYNTHESIS.md's recommendations are
+calibrated for that genre (R3F/GSAP/motion). Admin-tool studies ask different questions
+(information architecture, list/table conventions, settings patterns) and carry their own
+recommendation section directly in `findings.md` rather than feeding the shared synthesis.
+
+| Slug | Type | Key patterns |
+|---|---|---|
+| meta-business-suite | Multi-tenant social/ads management SaaS | Page switcher (two-pane portfolio/asset picker), settings-as-status-cards, list/table conventions (filter chips, bulk actions, Columns customization), unified inbox with lightweight CRM fields, gated-data states with a stated reason |
+
 ## How to use
 
 When starting any design or build task, read `SYNTHESIS.md` Section 4
 (Recommendations) to identify which patterns apply. Reference individual
-`{slug}/findings.md` if you need the mechanism detail for a specific technique.
+`{slug}/findings.md` if you need the mechanism detail for a specific technique. For
+admin/SaaS/dashboard work specifically, read the admin-tool study's own `findings.md`
+directly — its Recommendation section is already scoped to that genre.
 
 ## How to add a new study
 
