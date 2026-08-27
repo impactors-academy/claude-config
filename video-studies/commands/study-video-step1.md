@@ -13,13 +13,19 @@ downloading anything).
 Using /watch, study this video and write up structured findings: [URL or path]
 [optional: what to focus on — "the onboarding flow", "the ad's hook", "their
 pricing page walkthrough", etc.]
+[which project this belongs to, or "org-wide" for the workspace root]
 
 FIRST: derive a slug from the video (e.g. "acme-onboarding-demo" for a demo
-video, "competitor-x-pricing-walkthrough" for a walkthrough) and create this
-folder structure before doing anything else:
+video, "competitor-x-pricing-walkthrough" for a walkthrough) and pick the
+target project's docs/ — the workspace root's docs/ for an org-wide topic,
+or that specific project's own docs/ if it's specific to one venture. Create
+this folder structure there before doing anything else:
 
-video-studies/[slug]/
-video-studies/[slug]/frames/
+<project>/docs/video-studies/[slug]/
+<project>/docs/video-studies/[slug]/frames/
+
+Do NOT write findings into the skills repo (~/.claude/skills/video-studies/)
+— that's the tool, not the content store. See SKILL.md for why.
 
 Run /watch on the video. Read the frames and transcript it returns. Then
 write the findings — do NOT just paste /watch's raw report.
@@ -50,9 +56,12 @@ Go through it in this order:
 5. TAKEAWAYS
    - 2-4 bullet points: what's worth reusing or avoiding, and why.
 
-Write the full structured write-up to video-studies/[slug]/findings.md — not
-printed only in the terminal. Then add one row to the "Videos studied" table
-in video-studies/SKILL.md: slug, source, type, and a one-line key takeaway.
+Write the full structured write-up to
+<project>/docs/video-studies/[slug]/findings.md — not printed only in the
+terminal. Then add one row to the "Studies" table in that project's
+docs/video-studies/README.md (create it, mirroring this one's shape, if it
+doesn't exist yet), and to docs/INDEX.md if this is the first video study in
+that project.
 
 Do not paste transcript excerpts beyond a short quote where the specific
 wording is the finding (e.g. a CTA line). Do not reproduce the video's actual
@@ -60,10 +69,11 @@ narrative/content — describe technique and pattern only, same boundary as
 site-studies/.
 ```
 
-Result after running this once per video:
+Result after running this once per video, inside the target project's repo:
 
 ```
-video-studies/
+docs/video-studies/
+├── README.md
 ├── acme-onboarding-demo/
 │   ├── findings.md
 │   └── frames/
