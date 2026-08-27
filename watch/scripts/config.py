@@ -77,12 +77,19 @@ def get_config() -> dict[str, object]:
     ).strip().lower()
     local_whisper_enabled = local_raw not in FALSY
 
+    cookies_from_browser = (
+        os.environ.get("WATCH_COOKIES_FROM_BROWSER")
+        or file_values.get("WATCH_COOKIES_FROM_BROWSER")
+        or None
+    )
+
     return {
         "detail": detail,
         "config_file": str(CONFIG_FILE),
         "local_model": local_model,
         "local_compute": local_compute,
         "local_whisper_enabled": local_whisper_enabled,
+        "cookies_from_browser": cookies_from_browser,
     }
 
 

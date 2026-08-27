@@ -70,6 +70,13 @@ OPENAI_API_KEY=
 # WATCH_LOCAL_MODEL=large-v3        # tiny | base | small | medium | large-v3
 # WATCH_LOCAL_COMPUTE=int8          # int8 (lower RAM) | float16 | float32 (more RAM, slightly better)
 
+# Some sites (YouTube in particular) block anonymous downloads and ask for
+# browser cookies. Set this to borrow cookies from an installed browser's
+# cookie store — read locally by yt-dlp, sent only to the site the URL
+# points at, same as a logged-in browser tab. One of: chrome, safari,
+# firefox, edge, brave, chromium, vivaldi, opera.
+# WATCH_COOKIES_FROM_BROWSER=chrome
+
 # Default watch behavior (the /watch first-run wizard sets this for you).
 # Allowed values: transcript | efficient | balanced | token-burner
 # Keep the value on its own line with no trailing comment.

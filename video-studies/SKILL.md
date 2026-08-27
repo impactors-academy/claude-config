@@ -16,17 +16,17 @@ reference library), applied to video instead of live sites.
 
 ## Videos studied
 
-_(none yet — first study adds a row here)_
-
 | Slug | Source | Type | Key takeaways |
 |---|---|---|---|
+| [adam-mitka-ugc-workflow](adam-mitka-ugc-workflow/findings.md) | youtu.be/lVYNwbCalkY (Adam Mitka) | Creator-education talking-head + whiteboard | Finding → Pitching → Stacking outreach-and-delivery pattern; "free value before the ask" pitch structure; persistent whiteboard-map presentation device |
 
 ## How a study gets added
 
-Run `/study-video-step1` (in `commands/`) with a video URL or local path. It
-uses `/watch` to pull frames + transcript, writes structured findings to
-`{slug}/findings.md`, saves any frames worth keeping to `{slug}/frames/`, and
-adds a row to the table above.
+`commands/study-video-step1.md` is a reference prompt, not a registered slash
+command — follow it manually (or paste its contents as your prompt): run
+`/watch` on the video, read the frames + transcript it returns, then write
+structured findings to `{slug}/findings.md`, save any frames worth keeping to
+`{slug}/frames/`, and add a row to the table above.
 
 ## Standing rule
 

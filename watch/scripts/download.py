@@ -62,7 +62,19 @@ def _pick_video(out_dir: Path) -> Path | None:
     return None
 
 
-def fetch_captions(url: str, out_dir: Path) -> dict:
+def _cookie_args(cookies_from_browser: str | None) -> list[str]:
+    """yt-dlp flags to read cookies from an installed browser's cookie store.
+
+    Needed when a site (YouTube in particular) blocks anonymous/bot-looking
+    requests. Reads cookies locally only — nothing is sent anywhere except
+    to the site the URL points at, same as a logged-in browser tab would.
+    """
+    if not cookies_from_browser:
+        return []
+    return ["--cookies-from-browser", cookies_from_browser]
+
+
+def fetch_captions(url: str, out_dir: Path, cookies_from_browser: str | None = None) -> dict:
     """Fetch metadata and best available VTT captions without downloading video."""
     if shutil.which("yt-dlp") is None:
         raise SystemExit("yt-dlp is not installed. Install with: brew install yt-dlp")
@@ -80,6 +92,7 @@ def fetch_captions(url: str, out_dir: Path) -> dict:
         "--convert-subs", "vtt",
         "--no-playlist",
         "--ignore-errors",
+        *_cookie_args(cookies_from_browser),
         "-o", output_template,
         "--",
         url,
@@ -116,6 +129,7 @@ def download_url(
     url: str,
     out_dir: Path,
     audio_only: bool = False,
+    cookies_from_browser: str | None = None,
 ) -> dict:
     if shutil.which("yt-dlp") is None:
         raise SystemExit("yt-dlp is not installed. Install with: brew install yt-dlp")
@@ -137,6 +151,7 @@ def download_url(
         "--convert-subs", "vtt",
         "--no-playlist",
         "--ignore-errors",
+        *_cookie_args(cookies_from_browser),
         "-o", output_template,
         "--",
         url,
@@ -166,9 +181,10 @@ def download(
     source: str,
     out_dir: Path,
     audio_only: bool = False,
+    cookies_from_browser: str | None = None,
 ) -> dict:
     if is_url(source):
-        return download_url(source, out_dir, audio_only=audio_only)
+        return download_url(source, out_dir, audio_only=audio_only, cookies_from_browser=cookies_from_browser)
     return resolve_local(source)
 
 

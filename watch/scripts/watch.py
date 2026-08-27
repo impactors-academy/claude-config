@@ -74,6 +74,14 @@ def main() -> int:
         help="Disable near-duplicate frame removal. Keeps visually identical "
              "frames (static screen recordings, held slides) instead of collapsing them.",
     )
+    ap.add_argument(
+        "--cookies-from-browser",
+        type=str,
+        default=None,
+        help="Borrow cookies from an installed browser (chrome, safari, firefox, edge, "
+             "brave, chromium, vivaldi, opera) when a site blocks anonymous downloads. "
+             "Default: WATCH_COOKIES_FROM_BROWSER in ~/.config/watch/.env, if set.",
+    )
     args = ap.parse_args()
 
     config = get_config()
@@ -103,9 +111,11 @@ def main() -> int:
     consent_needed = False
     video_path: str | None = None
 
+    cookies_from_browser = args.cookies_from_browser or config.get("cookies_from_browser")
+
     if url_source:
         print("[watch] checking metadata/captions via yt-dlp…", file=sys.stderr)
-        dl = fetch_captions(args.source, work / "download")
+        dl = fetch_captions(args.source, work / "download", cookies_from_browser=cookies_from_browser)
         if dl.get("subtitle_path"):
             try:
                 transcript_segments = parse_vtt(dl["subtitle_path"])
@@ -131,6 +141,7 @@ def main() -> int:
                 args.source,
                 work / "download",
                 audio_only=audio_only,
+                cookies_from_browser=cookies_from_browser,
             )
         else:
             print("[watch] using local file…", file=sys.stderr)
