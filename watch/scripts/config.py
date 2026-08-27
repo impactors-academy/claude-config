@@ -10,8 +10,12 @@ CONFIG_DIR = Path.home() / ".config" / "watch"
 CONFIG_FILE = CONFIG_DIR / ".env"
 
 DEFAULT_DETAIL = "balanced"
+DEFAULT_LOCAL_MODEL = "large-v3"
+DEFAULT_LOCAL_COMPUTE = "int8"
 
 DETAILS = {"transcript", "efficient", "balanced", "token-burner"}
+TRUTHY = {"1", "true", "yes", "on"}
+FALSY = {"0", "false", "no", "off"}
 
 
 def read_env_file(path: Path | None = None) -> dict[str, str]:
@@ -56,9 +60,29 @@ def get_config() -> dict[str, object]:
     if detail not in DETAILS:
         detail = DEFAULT_DETAIL
 
+    local_model = (
+        os.environ.get("WATCH_LOCAL_MODEL")
+        or file_values.get("WATCH_LOCAL_MODEL")
+        or DEFAULT_LOCAL_MODEL
+    )
+    local_compute = (
+        os.environ.get("WATCH_LOCAL_COMPUTE")
+        or file_values.get("WATCH_LOCAL_COMPUTE")
+        or DEFAULT_LOCAL_COMPUTE
+    )
+    local_raw = (
+        os.environ.get("WATCH_LOCAL_WHISPER")
+        or file_values.get("WATCH_LOCAL_WHISPER")
+        or "true"
+    ).strip().lower()
+    local_whisper_enabled = local_raw not in FALSY
+
     return {
         "detail": detail,
         "config_file": str(CONFIG_FILE),
+        "local_model": local_model,
+        "local_compute": local_compute,
+        "local_whisper_enabled": local_whisper_enabled,
     }
 
 

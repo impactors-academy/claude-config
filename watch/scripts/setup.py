@@ -30,6 +30,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 from config import get_config  # noqa: E402
+import local_whisper  # noqa: E402
 
 
 REQUIRED_BINARIES = ["ffmpeg", "ffprobe", "yt-dlp"]
@@ -37,20 +38,27 @@ CONFIG_DIR = Path.home() / ".config" / "watch"
 CONFIG_FILE = CONFIG_DIR / ".env"
 ENV_TEMPLATE = """# /watch API configuration
 #
-# Whisper transcription fallback — used only when yt-dlp cannot get captions
-# (or when you point /watch at a local file with no subtitles).
+# Transcription fallback — used only when yt-dlp cannot get captions (or when
+# you point /watch at a local file with no subtitles). Tried in this order:
+#   1. Local Whisper (faster-whisper, runs on this machine) — free, no key,
+#      installed automatically by setup.py. Model weights download once from
+#      Hugging Face on first use (~3GB for large-v3), then it's fully offline.
+#   2. Groq API (whisper-large-v3) — only used if local Whisper couldn't be
+#      installed. Cheap and fast: https://console.groq.com/keys
+#   3. OpenAI API (whisper-1) — compatible fallback if Groq isn't set:
+#      https://platform.openai.com/api-keys
 #
-# Groq is preferred: it runs whisper-large-v3 at a fraction of OpenAI's price
-# and is faster in practice. OpenAI is the compatible fallback.
-#
-# Get a Groq key:  https://console.groq.com/keys
-# Get an OpenAI key:  https://platform.openai.com/api-keys
-#
-# Leave both blank to disable Whisper — /watch will still work, but videos
-# without native captions will come back frames-only.
+# Leave both keys blank if local Whisper installed successfully — you don't
+# need them. Leave everything blank to disable Whisper entirely — /watch
+# still works, but videos without native captions come back frames-only.
 
 GROQ_API_KEY=
 OPENAI_API_KEY=
+
+# Local Whisper tuning (defaults shown; uncomment to override).
+# WATCH_LOCAL_WHISPER=true          # set false to skip local and go straight to API/keys
+# WATCH_LOCAL_MODEL=large-v3        # tiny | base | small | medium | large-v3
+# WATCH_LOCAL_COMPUTE=int8          # int8 (lower RAM) | float16 | float32 (more RAM, slightly better)
 
 # Default watch behavior (the /watch first-run wizard sets this for you).
 # Allowed values: transcript | efficient | balanced | token-burner
@@ -217,29 +225,32 @@ def _install_hint_windows(missing: list[str]) -> str:
 def _status() -> dict:
     """Structured preflight snapshot.
 
-    `status` describes the *ideal* state (a Whisper key is encouraged), so a
-    keyless install still reports `needs_key` on the very first run — that's
-    the agent's cue to encourage adding one.
+    `status` describes the *ideal* state (some transcription fallback is
+    encouraged), so a setup with neither local Whisper nor an API key still
+    reports `needs_key` on the very first run — that's the agent's cue to
+    encourage one.
 
     `can_proceed` is the operational gate: /watch can run as long as the
-    binaries are present AND the user has either set a key or already finished
-    setup (consciously opting out of Whisper). A keyless user who completed
-    setup is NOT nagged on every call.
+    binaries are present AND the user has local Whisper installed, or a key
+    set, or already finished setup (consciously opting out of transcription
+    entirely). A user who completed setup is NOT nagged on every call.
     """
     missing = _check_binaries()
     has_key, backend = _have_api_key()
+    has_local = local_whisper.is_installed()
+    has_transcription = has_local or has_key
     setup_complete = not is_first_run()
 
-    if not missing and has_key:
+    if not missing and has_transcription:
         status = "ready"
-    elif missing and not has_key:
+    elif missing and not has_transcription:
         status = "needs_install_and_key"
     elif missing:
         status = "needs_install"
     else:
         status = "needs_key"
 
-    can_proceed = (not missing) and (has_key or setup_complete)
+    can_proceed = (not missing) and (has_transcription or setup_complete)
 
     cfg = get_config()
     return {
@@ -248,6 +259,7 @@ def _status() -> dict:
         "first_run": not setup_complete,
         "setup_complete": setup_complete,
         "missing_binaries": missing,
+        "has_local_whisper": has_local,
         "whisper_backend": backend,
         "has_api_key": has_key,
         "config_file": str(CONFIG_FILE),
@@ -275,8 +287,8 @@ def cmd_check() -> int:
     parts = []
     if s["missing_binaries"]:
         parts.append(f"missing binaries: {', '.join(s['missing_binaries'])}")
-    if not s["has_api_key"] and not s["setup_complete"]:
-        parts.append("no Whisper API key (GROQ_API_KEY or OPENAI_API_KEY)")
+    if not s["has_local_whisper"] and not s["has_api_key"] and not s["setup_complete"]:
+        parts.append("no transcription fallback (local Whisper not installed, no GROQ_API_KEY/OPENAI_API_KEY)")
     installer = Path(__file__).resolve()
     sys.stderr.write(
         f"[watch] setup incomplete ({'; '.join(parts)}). "
@@ -332,21 +344,42 @@ def cmd_install() -> int:
         print(f"[setup] config exists: {CONFIG_FILE}")
 
     has_key, backend = _have_api_key()
-    if has_key:
+    has_local = local_whisper.is_installed()
+
+    # Local Whisper first: free, no key, and (at large-v3) the same model
+    # quality as the paid API. Only fall back to asking for an API key if
+    # this install fails (no pip, no network, disk full, etc.).
+    if not has_local:
+        ok, msg = local_whisper.install()
+        if ok:
+            has_local = True
+            print(
+                "[setup] local Whisper (faster-whisper) installed. Model weights "
+                "download once on first video without captions, then it's fully offline."
+            )
+        else:
+            print(f"[setup] could not install local Whisper automatically: {msg}")
+
+    if has_local or has_key:
         _write_setup_complete()
-        print(f"[setup] ready. whisper backend: {backend}")
+        if has_local and has_key:
+            print(f"[setup] ready. transcription: local Whisper (backup: {backend} API)")
+        elif has_local:
+            print("[setup] ready. transcription: local Whisper — no API key needed.")
+        else:
+            print(f"[setup] ready. transcription: {backend} API (local Whisper unavailable).")
         if installed_deps:
             print("[setup] installed dependencies; /watch is fully set up.")
         return 0
 
     print("")
-    print("[setup] one step left: add a Whisper API key.")
+    print("[setup] one step left: local Whisper install failed and no API key is set.")
     print("")
     print(f"  Edit {CONFIG_FILE} and set either:")
     print("    GROQ_API_KEY=...    (preferred — cheaper, faster; get one at console.groq.com/keys)")
     print("    OPENAI_API_KEY=...  (fallback; get one at platform.openai.com/api-keys)")
     print("")
-    print("  Without a key, /watch still works but videos without captions come back frames-only.")
+    print("  Without either, /watch still works but videos without captions come back frames-only.")
     return 3
 
 

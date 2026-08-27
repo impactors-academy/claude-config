@@ -12,6 +12,11 @@ authors' public repos. This file says which is which.
 | Animation / 3D / Design bundle (23 skills) | [`freshtechbro/claudedesignskills`](https://github.com/freshtechbro/claudedesignskills) | See source repo |
 | `watch` — video download, frame extraction, transcription | [`bradautomates/claude-video`](https://github.com/bradautomates/claude-video) by [bradautomates](https://github.com/bradautomates) | MIT |
 
+`watch` has one local modification on top of upstream: a free local Whisper
+(`faster-whisper`) transcription path was added ahead of the paid API
+fallback — see the fork note at the top of `watch/SKILL.md` and
+`watch/scripts/local_whisper.py`.
+
 Full attribution and counts are also tracked in the "Skill Sources" table in
 `README.md`. When you add another cloned skill, update both files.
 
