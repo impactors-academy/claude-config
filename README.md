@@ -380,13 +380,16 @@ git -C ~/.claude/skills pull
 
 ## Skill Sources
 
+Full credit, including licenses, is in [`CREDIT.md`](CREDIT.md).
+
 | Skills | Source | Count |
 |---|---|---|
 | UI/UX Pro Max suite | `nextlevelbuilder/ui-ux-pro-max-skill` | 7 |
 | Business / Marketing / Engineering | `alirezarezvani/claude-skills` | 430 |
 | Animation / 3D / Design | `freshtechbro/claudedesignskills` | 23 |
 | 21st.dev Inspiration | Custom + 21st.dev API | 1 (with 148 prompts) |
-| **Total** | | **461** |
+| `watch` — video download/frame/transcribe | `bradautomates/claude-video` (MIT) | 1 |
+| **Total** | | **462** |
 
 ---
 
