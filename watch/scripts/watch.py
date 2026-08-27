@@ -100,6 +100,7 @@ def main() -> int:
     transcript_segments: list[dict] = []
     transcript_text: str | None = None
     transcript_source: str | None = None
+    consent_needed = False
     video_path: str | None = None
 
     if url_source:
@@ -285,15 +286,17 @@ def main() -> int:
                     transcript_source = f"whisper ({used_backend})"
                 except SystemExit as exc:
                     print(f"[watch] whisper fallback failed: {exc}", file=sys.stderr)
-            else:
-                hint = (
-                    f"--whisper {args.whisper} was set but the matching API key is missing"
-                    if args.whisper else
-                    "no subtitles, no local Whisper, and no Whisper API key found"
-                )
-                setup_py = SCRIPT_DIR / "setup.py"
+            elif args.whisper:
                 print(
-                    f"[watch] {hint} — run `python3 {setup_py}` to enable transcription",
+                    f"[watch] --whisper {args.whisper} was set but the matching API key is missing "
+                    f"in ~/.config/watch/.env — add it, then re-run",
+                    file=sys.stderr,
+                )
+            else:
+                consent_needed = True
+                print(
+                    "[watch] no captions, no local Whisper, no API key — nothing was installed or "
+                    "called. Ask the user which transcription option they want, then re-run.",
                     file=sys.stderr,
                 )
     elif not transcript_segments and video_path and not meta.get("has_audio"):
@@ -407,13 +410,32 @@ def main() -> int:
         )
     elif focused and dl.get("subtitle_path"):
         print(f"_No transcript lines fell inside {format_time(effective_start)} → {format_time(effective_end)}._")
+    elif consent_needed:
+        print(
+            "> **TRANSCRIPTION_CONSENT_NEEDED** — this video has no captions, and nothing was "
+            "installed or called to get one (that's deliberate — install/download and API use "
+            "both require the user to say yes first).\n"
+            ">\n"
+            "> Ask the user to choose:\n"
+            "> - **Local Whisper** — free, no API key, but a one-time ~3GB model download "
+            "(`large-v3`, cached after that, fully offline forever after). Once they agree, run "
+            f"`python3 {SCRIPT_DIR / 'setup.py'} --install-local-whisper`, then re-run this exact "
+            "/watch command.\n"
+            "> - **Groq or OpenAI API key** — no download, costs a small amount per minute of "
+            "audio. Ask which, get the key, write it as `GROQ_API_KEY=...` or "
+            f"`OPENAI_API_KEY=...` in `~/.config/watch/.env`, then re-run.\n"
+            "> - **Skip** — proceed with frames only for this video (or every video, with "
+            "`--no-whisper`).\n"
+            ">\n"
+            "> Proceeding with frames only for now."
+        )
     else:
         setup_py = SCRIPT_DIR / "setup.py"
         print(
             "_No transcript available — proceed with frames only. "
             "Captions were missing and no transcription fallback was available "
-            "(local Whisper not installed, no API key set, or `--no-whisper` was used). "
-            f"Run `python3 {setup_py}` to enable transcription, then re-run._"
+            "(no API key set, or `--no-whisper` was used). "
+            f"Run `python3 {setup_py}` for the ffmpeg/yt-dlp preflight, then re-run._"
         )
 
     print()
