@@ -11,6 +11,7 @@ authors' public repos. This file says which is which.
 | Business / Marketing / Engineering bundle (430 skills) | [`alirezarezvani/claude-skills`](https://github.com/alirezarezvani/claude-skills) | See source repo |
 | Animation / 3D / Design bundle (23 skills) | [`freshtechbro/claudedesignskills`](https://github.com/freshtechbro/claudedesignskills) | See source repo |
 | `watch` — video download, frame extraction, transcription | [`bradautomates/claude-video`](https://github.com/bradautomates/claude-video) by [bradautomates](https://github.com/bradautomates) | MIT |
+| `motion-broll` — motion-graphic B-roll timed to a video's transcript | [`Barty-Bart/motion-graphics`](https://github.com/Barty-Bart/motion-graphics) by [Barty-Bart](https://github.com/Barty-Bart) | MIT (Geist fonts: SIL OFL) |
 
 `watch` has one local modification on top of upstream: a free local Whisper
 (`faster-whisper`) transcription path was added ahead of the paid API

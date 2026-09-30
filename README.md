@@ -389,7 +389,8 @@ Full credit, including licenses, is in [`CREDIT.md`](CREDIT.md).
 | Animation / 3D / Design | `freshtechbro/claudedesignskills` | 23 |
 | 21st.dev Inspiration | Custom + 21st.dev API | 1 (with 148 prompts) |
 | `watch` — video download/frame/transcribe | `bradautomates/claude-video` (MIT) | 1 |
-| **Total** | | **462** |
+| `motion-broll` — motion-graphic B-roll | `Barty-Bart/motion-graphics` (MIT) | 1 |
+| **Total** | | **463** |
 
 ---
 
