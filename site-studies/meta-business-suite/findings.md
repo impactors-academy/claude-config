@@ -5,14 +5,12 @@
 **Method:** Live walkthrough (logged into a real account) plus 56 screenshots captured by
 the user across every major section, reviewed in full.
 
-**No screenshots in this copy.** The captures were of a real, live Impactors Academy
-account — real follower counts, real handles, one real DM conversation with a person's
-bio and photo. This is the public `claude-config` mirror, so the images stay out of it
-on purpose; only the pattern-level write-up below is shared here. The full study with
-screenshots (`screenshots/image.png` through `image copy 55.png`, in capture order —
-`image.png` is an unrelated LinkedIn screen) lives in the private `impactors-academy`
-repo at `docs/site-studies/meta-business-suite/`, PR #20, for anyone with access who
-wants the visual reference behind a specific finding below.
+**Screenshots:** `screenshots/00-…` through `screenshots/55-…`, numbered in capture order, with a
+descriptive name per frame. `00-unrelated-linkedin-developer-portal.png` is a LinkedIn Developer
+Portal screen, unrelated to this study and excluded below. The captures are of a real, live
+Impactors Academy account. The browser bar was cropped off every frame, and ad account numbers,
+link previews and the names and photos of third parties in the Inbox frame were blurred. The
+images stay on the local machine only (the folder is gitignored in this public repo).
 
 ---
 
@@ -31,7 +29,7 @@ that actually matter for an admin tool.
 
 ## 1. The Switcher — top-level context scoping
 
-**Screenshots:** `image copy 2.png` (dropdown open), `image copy 3.png` (collapsed icon
+**Screenshots:** `01-switcher-dropdown-open.png` (dropdown open), `04-content-icon-rail.png` (collapsed icon
 rail)
 
 A pill button (small avatar + name + chevron) sits above the sidebar. Clicking it opens a
@@ -67,7 +65,7 @@ over-engineering for 3 items and would misrepresent our actual architecture.
 
 ## 2. Sidebar shapes — icon rail vs. labeled, and where each shows up
 
-**Screenshots:** `image copy 3.png` (icon-only, hover reveals label), `image copy 55.png`
+**Screenshots:** `04-content-icon-rail.png` (icon-only, hover reveals label), `06-mbs-home-no-ad-permission.png` and `55-monetization-labeled-sidebar-create-flyout.png`
 (fully labeled, "Meta Business Suite" top-level)
 
 Two sidebar treatments exist depending on which sub-app you're in:
@@ -75,7 +73,7 @@ Two sidebar treatments exist depending on which sub-app you're in:
   pages): narrow fixed-width column, icons only, a label tooltip/flyout on hover. Cheap
   on horizontal space, works because there are 10+ icons and no room for labels at that
   density.
-- **Fully labeled** (Meta Business Suite's own top-level shell, `image copy 55.png`):
+- **Fully labeled** (Meta Business Suite's own top-level shell, `06-mbs-home-no-ad-permission.png` and `55-monetization-labeled-sidebar-create-flyout.png`):
   wider sidebar, icon + text label per item, sections separated by thin rules, a "Create"
   item with a chevron that opens a flyout of quick actions (Ad / Post / Reel / Story / Go
   live / Post reel across pages / Bulk upload reels).
@@ -89,7 +87,7 @@ so a future audit doesn't mistake it for inconsistency.
 
 ## 3. Nested flyout submenus on sidebar items
 
-**Screenshot:** `image copy 10.png`
+**Screenshot:** `12-mbs-home-ads-manager-flyout.png`
 
 Ads Manager's sidebar icon for "Ads Manager" itself expands into a secondary flyout panel
 listing its own sub-items (Account overview, Campaigns, Audiences, Billing & payments,
@@ -106,8 +104,8 @@ grouping (e.g., if Loc later gets Leads, Referrals, Blog management on the mothe
 
 ## 4. The "All tools" mega-directory
 
-**Screenshots:** `image copy 19.png`, `image copy 20.png`, `image copy 33.png`,
-`image copy 34.png`
+**Screenshots:** `15-all-tools-directory-1.png`, `16-all-tools-directory-2.png`, `53-all-tools-from-monetization-1.png`,
+`54-all-tools-from-monetization-2.png`
 
 A full-screen (or large panel) directory of *every* tool across the whole product,
 organized into named categories: Business products, Engage audience, Advertise, Manage,
@@ -127,7 +125,7 @@ entity into the sidebar indefinitely.
 
 ## 5. Notifications panel
 
-**Screenshots:** `image copy 8.png`, `image copy 9.png`
+**Screenshots:** `08-notifications-all.png`, `09-notifications-business-empty.png`
 
 A slide-in panel triggered from a sidebar bell icon (not top-right, which is where most
 products put it). Tabs: All / Business / Ads / Profiles. An "Unread" toggle switch.
@@ -143,8 +141,8 @@ retrofit speculatively.
 
 ## 6. List/table view conventions (the pattern most relevant to our own CRUD pages)
 
-**Screenshots:** `image copy 14.png` (Audiences), `image copy 12.png`/`13.png` (Ads
-Reporting), `image copy 17.png` (Billing)
+**Screenshots:** `21-ads-audiences.png` (Audiences), `18-ads-reporting-1.png`/`19-ads-reporting-2.png` (Ads
+Reporting), `24-ads-billing-payment-settings.png` (Billing)
 
 Every data table in this product follows the same shape:
 - A row of **filter chips** above the table (e.g., "All audiences / Active ads / Action
@@ -177,7 +175,7 @@ large enough that scrolling to find a row is the actual complaint, not before.
 
 ## 7. Settings-as-status-cards
 
-**Screenshots:** `image copy 15.png`, `image copy 16.png`, `image copy 52.png`
+**Screenshots:** `22-ads-advertising-settings-1.png`, `23-ads-advertising-settings-2.png`, `52-monetization-home.png`
 
 Rather than a traditional settings form, Advertising Settings and Monetization render
 settings as a **grid of cards**, each showing: an icon, a title, one line of what it does,
@@ -198,7 +196,7 @@ worth deliberately copying, not just noting.
 
 ## 8. Gamified progress / weekly plan
 
-**Screenshots:** `image copy 22.png`, `image copy 23.png`
+**Screenshots:** `42-insights-overview.png`, `43-insights-plan.png`
 
 Insights Overview leads with a "Weekly plan" card: a progress bar, "N of 7 tasks
 completed," and a row of task cards (icon + task name + "0/1" counter + a direct-action
@@ -216,7 +214,7 @@ oversight.
 
 ## 9. Locked/gated data states with an honest reason
 
-**Screenshot:** `image copy 25.png`
+**Screenshot:** `45-insights-audience.png`
 
 Audience Demographics doesn't just hide data when there isn't enough of it — it explains
 *why*: "You need 100 followers who are not also friends to see this demographic data. To
@@ -234,7 +232,7 @@ cross-check that we're consistent with it everywhere (worth an audit pass: does 
 
 ## 10. Benchmarking / percentile comparison
 
-**Screenshots:** `image copy 26.png`, `image copy 27.png`
+**Screenshots:** `46-insights-benchmark-1.png`, `47-insights-benchmark-2.png`
 
 A bar chart plotting "your business" against 25th/50th/75th percentile bars for similar
 businesses, plus a colored status pill ("Lower than others" / "Similar to others") next
@@ -249,7 +247,7 @@ against). Skip entirely, not a gap.
 
 ## 11. Unified inbox with a lightweight CRM layer
 
-**Screenshot:** `image copy 33.png` *(labeled in capture order as the Inbox screen — the
+**Screenshot:** `30-inbox-all-messages.png` *(the Inbox screen; the
 one with Messenger/Instagram/WhatsApp tabs and a right-side contact panel)*
 
 All platforms' DMs and comments (Messenger, Instagram, WhatsApp, Facebook comments,
@@ -271,7 +269,7 @@ for this session; flagging for whoever picks up that bullet.
 
 ## 12. Content calendar (Planner)
 
-**Screenshot:** `image copy 38.png` *(week view, date navigation, Goals/Moments/Drafts
+**Screenshot:** `40-planner-content-calendar.png` *(week view, date navigation, Goals/Moments/Drafts
 side tabs)*
 
 A week/month calendar for scheduled content, with a right-side panel offering Goals /

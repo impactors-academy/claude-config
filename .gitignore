@@ -5,3 +5,7 @@ color-combinations/references/*.pdf
 
 # Private context repo, cloned separately. Never commit it here (this repo is public).
 impactors-context/
+
+# App-managed sync cache and raw Meta screenshots (account data, large)
+synced/
+site-studies/meta-business-suite/screenshots/
