@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .DS_Store
 color-combinations/references/*.pdf
+
+# Private context repo, cloned separately. Never commit it here (this repo is public).
+impactors-context/
